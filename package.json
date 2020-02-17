@@ -1,0 +1,44 @@
+{
+  "name": "koa-galen",
+  "version": "1.0.0",
+  "description": "Koa galen.",
+  "main": "index.js",
+  "repository": "https://github.com/AlfieriChou/koa-galen",
+  "author": "AlfieriChou <alfierichou@gmail.com>",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon server.js",
+    "test": "jest --forceExit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "keywords": [
+    "sequelize",
+    "swagger",
+    "koa"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-standard": "^3.0.1",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.7",
+    "nodemon": "^2.0.2",
+    "standard-version": "^7.1.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-body": "^4.1.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^8.0.8",
+    "koa-views": "^6.2.1"
+  }
+}
