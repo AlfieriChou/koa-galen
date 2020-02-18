@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize')
-const path = require('path')
 const readDirFilenames = require('read-dir-filenames')
 
-module.exports = (config) => {
+module.exports = (config, modelDirPath) => {
   const {
     mysql: {
       host, database, user, password
@@ -19,7 +18,7 @@ module.exports = (config) => {
     logging: false
   })
 
-  const paths = readDirFilenames(path.resolve(__dirname, '../models'), { ignore: 'index.js' })
+  const paths = readDirFilenames(modelDirPath, { ignore: 'index.js' })
   const db = paths.reduce((ret, file) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const sequelizeModel = require(file)

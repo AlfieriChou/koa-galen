@@ -5,7 +5,7 @@ const { Validator } = require('jsonschema')
 const _ = require('lodash')
 const {
   generateSwaggerDoc, convert, camelizeKeys, BaseController, intersection
-} = require('../common')
+} = require('./common')
 
 const api = KoaRouter()
 const v = new Validator()
@@ -37,7 +37,7 @@ const validate = async apiInfo => async (ctx, next) => {
   return next()
 }
 
-const filenames = readDirFilenames(path.resolve(__dirname, '../models'), { ignore: 'index.js' })
+const filenames = readDirFilenames(path.resolve(__dirname, '../app/models'), { ignore: 'index.js' })
 filenames.forEach(async (filename) => {
   const modelName = path.basename(filename).replace(/\.\w+$/, '')
   // eslint-disable-next-line global-require, import/no-dynamic-require
@@ -63,7 +63,7 @@ filenames.forEach(async (filename) => {
                 name: 'MIT',
                 url: 'https://github.com/AlfieriChou/galen/blob/master/LICENSE'
               }
-            }, path.resolve(__dirname, '../models'))
+            }, path.resolve(__dirname, '../app/models'))
             ctx.body = result
           })
         }
@@ -79,7 +79,12 @@ filenames.forEach(async (filename) => {
         await checkRoles(apiInfo),
         await validate(apiInfo),
         async (ctx) => {
-          const ret = await BaseController[handler](ctx, _.upperFirst(modelName))
+          let ret
+          if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
+            ret = await ctx.controller[modelName][handler](ctx)
+          } else {
+            ret = await BaseController[handler](ctx, _.upperFirst(modelName))
+          }
           ctx.body = {
             status: 200,
             message: 'success',

@@ -6,7 +6,7 @@ const views = require('koa-views')
 const path = require('path')
 
 const config = require('./config')
-const { api, bindPropertiesToCtx } = require('./app/extends')
+const { api, bindPropertiesToCtx } = require('./framework')
 
 const app = new Koa()
 bindPropertiesToCtx(app)
