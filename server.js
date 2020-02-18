@@ -6,9 +6,10 @@ const views = require('koa-views')
 const path = require('path')
 
 const config = require('./config')
-const router = require('./app/extends/router')
+const { api, bindPropertiesToCtx } = require('./app/extends')
 
 const app = new Koa()
+bindPropertiesToCtx(app)
 
 app.use(async (ctx, next) => {
   if (ctx.request.method === 'OPTIONS') {
@@ -35,7 +36,7 @@ app
   .use(koaLogger())
   .use(views(path.join('./views'), { map: { html: 'nunjucks' } }))
   .use(koabody({}))
-  .use(router.middleware())
+  .use(api.middleware())
   .use(bodyParser())
 
 if (!module.parent) {

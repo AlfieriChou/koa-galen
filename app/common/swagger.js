@@ -6,7 +6,7 @@ const jsonSchema = require('./transform')
 const resTypeList = ['array', 'object', 'number', 'string', 'html']
 
 const generateSwaggerDoc = async (info, paths) => {
-  const docPaths = await readDirFilenames(paths, { ignore: 'index.js' })
+  const docPaths = readDirFilenames(paths, { ignore: 'index.js' })
   const components = {
     schemas: {}
   }
@@ -15,12 +15,11 @@ const generateSwaggerDoc = async (info, paths) => {
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const model = require(docPath)
     const schemaName = _.upperFirst(path.basename(docPath).replace(/\.\w+$/, ''))
-    await Object.entries(model).reduce(async (promise, [schemaKey, schemaValue]) => {
+    if (model.model) {
+      components.schemas[schemaName] = jsonSchema.convert(model.model)
+    }
+    await Object.entries(model.remoteMethods).reduce(async (promise, [schemaKey, schemaValue]) => {
       await promise
-      if (schemaKey === schemaName) {
-        components.schemas[schemaName] = jsonSchema.transform(schemaValue)
-        return
-      }
       const content = {
         tags: schemaValue.tags || '',
         summary: schemaValue.summary || ''

@@ -2,12 +2,12 @@ const Sequelize = require('sequelize')
 const path = require('path')
 const readDirFilenames = require('read-dir-filenames')
 
-module.exports = (ctx) => {
+module.exports = (config) => {
   const {
     mysql: {
       host, database, user, password
     }
-  } = ctx.config
+  } = config
   const sequelize = new Sequelize(database, user, password, {
     host,
     dialect: 'mysql',
@@ -22,7 +22,11 @@ module.exports = (ctx) => {
   const paths = readDirFilenames(path.resolve(__dirname, '../models'), { ignore: 'index.js' })
   const db = paths.reduce((ret, file) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
-    const model = require(file).createModel(sequelize)
+    const sequelizeModel = require(file)
+    if (!sequelizeModel.createModel) {
+      return ret
+    }
+    const model = sequelizeModel.createModel(sequelize)
     // eslint-disable-next-line no-param-reassign
     ret[model.name] = model
     return ret
