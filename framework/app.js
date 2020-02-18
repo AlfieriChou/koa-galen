@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 
 app
   .use(koaLogger())
-  .use(views(path.join('./views'), { map: { html: 'nunjucks' } }))
+  .use(views(path.resolve(__dirname, './views'), { map: { html: 'nunjucks' } }))
   .use(koabody({}))
   .use(api.middleware())
   .use(bodyParser())
