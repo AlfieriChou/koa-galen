@@ -7,6 +7,7 @@
   "author": "AlfieriChou <alfierichou@gmail.com>",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server.js",
+    "lint": "eslint --ext .js ./ --fix",
     "test": "jest --forceExit"
   },
   "husky": {
