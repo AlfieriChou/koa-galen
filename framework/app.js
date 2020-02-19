@@ -6,10 +6,11 @@ const views = require('koa-views')
 const path = require('path')
 
 const bindPropertiesToCtx = require('./bindPropertiesToCtx')
-const api = require('./router')
+const apiLoader = require('./router')
 
 const app = new Koa()
 bindPropertiesToCtx(app)
+const api = apiLoader(path.resolve(__dirname, '../app/models'), '/v1')
 
 app.use(async (ctx, next) => {
   if (ctx.request.method === 'OPTIONS') {
