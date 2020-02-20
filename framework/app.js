@@ -7,8 +7,8 @@ const path = require('path')
 
 const bindPropertiesToCtx = require('./bindPropertiesToCtx')
 const apiLoader = require('./router')
-const jwtVerifyMiddleware = require('../middleware/jwtVerify')
-const authMiddleware = require('../middleware/auth')
+const jwtVerifyMiddleware = require('./middleware/jwtVerify')
+const authMiddleware = require('./middleware/auth')
 
 const app = new Koa()
 bindPropertiesToCtx(app)
