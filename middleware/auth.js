@@ -1,4 +1,4 @@
-const { camelizeKeys } = require('../../app/common')
+const { camelizeKeys } = require('../app/common')
 
 module.exports = async (ctx, next) => {
   if (!ctx.user) {

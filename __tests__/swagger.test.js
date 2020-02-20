@@ -2,7 +2,8 @@ const request = require('supertest')
 const { app } = require('../framework')
 let server
 
-beforeAll(() => {
+beforeAll(async () => {
+  await app.loaderMiddlewares(app)
   server = app.listen(4000)
 })
 
