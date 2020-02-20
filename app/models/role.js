@@ -3,9 +3,8 @@ const _ = require('lodash')
 
 const model = {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  phone: { type: Sequelize.STRING, length: 11, comment: '手机号' },
-  password: { type: Sequelize.STRING, length: 32, comment: '密码' },
-  nickname: { type: Sequelize.STRING, length: 32, comment: '昵称' },
+  name: { type: Sequelize.STRING, comment: '权限名称' },
+  code: { type: Sequelize.STRING, comment: '权限编码' },
   createdAt: { type: Sequelize.DATE, allowNull: false },
   updatedAt: { type: Sequelize.DATE, allowNull: false },
   deletedAt: { type: Sequelize.DATE }
@@ -14,27 +13,20 @@ const model = {
 module.exports = {
   model,
   createModel: (sequelize) => {
-    const User = sequelize.define('User', model, {
+    const Role = sequelize.define('Role', model, {
+      timestamps: true,
+      paranoid: true,
       underscored: true,
-      tableName: 'user'
+      tableName: 'role'
     })
-
-    User.associate = (models) => {
-      User.hasMany(models.UserRole)
-      User.belongsToMany(models.Role, {
-        through: 'UserRole',
-        foreignKey: 'roleId'
-      })
-    }
-
-    return User
+    return Role
   },
   remoteMethods: {
     index: {
-      path: '/users',
+      path: '/roles',
       method: 'get',
-      tags: ['user'],
-      summary: '获取用户列表',
+      tags: ['role'],
+      summary: '获取权限列表',
       query: {
         where: { type: Sequelize.JSON, comment: '搜索条件 例如：where={}' },
         order: { type: Sequelize.ARRAY, comment: '排序 例如：order=[["createdAt","desc"]]' },
@@ -56,13 +48,14 @@ module.exports = {
       }
     },
     create: {
-      path: '/users',
+      path: '/roles',
       method: 'post',
-      tags: ['user'],
-      summary: '创建用户',
+      roles: ['admin'],
+      tags: ['role'],
+      summary: '创建权限',
       requestBody: {
-        body: _.pick(model, ['phone', 'password']),
-        required: ['phone', 'password']
+        body: _.pick(model, ['name', 'code']),
+        required: ['name', 'code']
       },
       output: {
         200: {
@@ -72,10 +65,11 @@ module.exports = {
       }
     },
     show: {
-      path: '/users/:id',
+      path: '/roles/:id',
       method: 'get',
-      tags: ['user'],
-      summary: '获取用户详情',
+      roles: ['admin'],
+      tags: ['role'],
+      summary: '获取权限详情',
       params: _.pick(model, ['id']),
       output: {
         200: {
@@ -85,13 +79,14 @@ module.exports = {
       }
     },
     update: {
-      path: '/users/:id',
+      path: '/roles/:id',
       method: 'put',
-      tags: ['user'],
-      summary: '修改用户信息',
+      roles: ['admin'],
+      tags: ['role'],
+      summary: '修改权限信息',
       params: _.pick(model, ['id']),
       requestBody: {
-        body: _.pick(model, ['phone', 'password'])
+        body: _.pick(model, ['name', 'code'])
       },
       output: {
         200: {
@@ -99,38 +94,16 @@ module.exports = {
         }
       }
     },
-    register: {
-      path: '/register',
-      method: 'post',
-      tags: ['user'],
-      summary: '用户注册',
-      requestBody: {
-        body: _.pick(model, ['phone', 'password']),
-        required: ['phone', 'password']
-      },
+    destroy: {
+      path: '/roles/:id',
+      method: 'delete',
+      roles: ['admin'],
+      tags: ['role'],
+      summary: '删除权限',
+      params: _.pick(model, ['id']),
       output: {
         200: {
-          type: 'object',
-          result: model
-        }
-      }
-    },
-    login: {
-      path: '/login',
-      method: 'post',
-      tags: ['user'],
-      summary: '用户登录',
-      requestBody: {
-        body: _.pick(model, ['phone', 'password']),
-        required: ['phone', 'password']
-      },
-      output: {
-        200: {
-          type: 'object',
-          result: {
-            user: { type: Sequelize.JSON, keys: model },
-            token: { type: Sequelize.STRING }
-          }
+          type: 'number'
         }
       }
     }
