@@ -1,29 +1,28 @@
-const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
 
-const config = require('../config')
 const initializeModel = require('./model')
 const classLoader = require('./classLoader')
 
-module.exports = (app) => {
+module.exports = (app, config) => {
   // eslint-disable-next-line no-param-reassign
   app.context.config = config
-  if (fs.existsSync(path.resolve(__dirname, '../app/models'))) {
+  const { modelDirPath, serviceDirPath, controllerDirPath } = config
+  if (fs.existsSync(modelDirPath)) {
     assert(config.mysql)
     assert(config.mysql.host)
     assert(config.mysql.database)
     assert(config.mysql.user)
     assert(config.mysql.password)
     // eslint-disable-next-line no-param-reassign
-    app.context.models = initializeModel(config, path.resolve(__dirname, '../app/models'))
+    app.context.models = initializeModel(config, modelDirPath)
   }
-  if (fs.existsSync(path.resolve(__dirname, '../app/controller'))) {
+  if (fs.existsSync(controllerDirPath)) {
     // eslint-disable-next-line no-param-reassign
-    app.context.controller = classLoader(path.resolve(__dirname, '../app/controller'))
+    app.context.controller = classLoader(controllerDirPath)
   }
-  if (fs.existsSync(path.resolve(__dirname, '../app/service'))) {
+  if (fs.existsSync(serviceDirPath)) {
     // eslint-disable-next-line no-param-reassign
-    app.context.service = classLoader(path.resolve(__dirname, '../app/service'))
+    app.context.service = classLoader(serviceDirPath)
   }
 }
