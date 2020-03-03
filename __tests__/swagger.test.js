@@ -5,7 +5,7 @@ let server
 
 beforeAll(async () => {
   const app = initializeApp(config)
-  await app.loaderMiddlewares(app)
+  await app.loadMiddlewares(app)
   server = app.listen(4000)
 })
 
