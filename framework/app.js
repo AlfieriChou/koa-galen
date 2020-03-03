@@ -50,7 +50,7 @@ module.exports = (baseConfig) => {
     bodyParser: bodyParser()
   }
 
-  app.loaderMiddlewares = async (application) => {
+  app.loadMiddlewares = async (application) => {
     await application.middlewareNames.reduce(async (promise, middlewareName) => {
       await promise
       application.use(application.middlewareFuncs[middlewareName])

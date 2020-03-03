@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
+    "eslint-friendly-formatter": "^4.0.1",
     "expire-store": "^1.0.2",
     "jsonschema": "^1.2.5",
     "jsonwebtoken": "^8.5.1",

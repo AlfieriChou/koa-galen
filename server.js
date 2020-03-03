@@ -14,7 +14,7 @@ const bootstrap = async () => {
     auth: authMiddleware,
     jwtVerify: jwtVerifyMiddleware
   }
-  await app.loaderMiddlewares(app)
+  await app.loadMiddlewares(app)
   app.listen(config.port, () => {
     // eslint-disable-next-line no-console
     console.log(`✅  The server is running at http://localhost:${config.port}`)

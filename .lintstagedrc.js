@@ -1,5 +1,5 @@
 module.exports = {
   '*.js': [
-    'eslint --ext .js ./ --fix'
+    'eslint --format "node_modules/eslint-friendly-formatter" --fix'
   ]
 }
