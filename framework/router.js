@@ -85,8 +85,11 @@ module.exports = (modelDirPath, prefix = '/v1') => {
               let ret
               if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
                 ret = await ctx.controller[modelName][handler](ctx)
-              } else {
+              }
+              if (BaseController[handler]) {
                 ret = await BaseController[handler](ctx, _.upperFirst(modelName))
+              } else {
+                ctx.throw(404, 'not found')
               }
               ctx.body = {
                 status: 200,
