@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize')
-
 module.exports = {
   remoteMethods: {
     index: {
@@ -22,31 +20,31 @@ module.exports = {
         200: {
           type: 'object',
           result: {
-            openapi: { type: Sequelize.STRING },
+            openapi: { type: 'string' },
             info: {
-              type: Sequelize.JSON,
-              keys: {
-                title: { type: Sequelize.STRING },
-                version: { type: Sequelize.STRING },
+              type: 'object',
+              properties: {
+                title: { type: 'string' },
+                version: { type: 'string' },
                 contact: {
-                  type: Sequelize.JSON,
-                  keys: {
-                    name: { type: Sequelize.STRING },
-                    email: { type: Sequelize.STRING },
-                    url: { type: Sequelize.STRING }
+                  type: 'object',
+                  properties: {
+                    name: { type: 'string' },
+                    email: { type: 'string' },
+                    url: { type: 'string' }
                   }
                 },
                 license: {
-                  type: Sequelize.JSON,
-                  keys: {
-                    name: { type: Sequelize.STRING },
-                    url: { type: Sequelize.STRING }
+                  type: 'object',
+                  properties: {
+                    name: { type: 'string' },
+                    url: { type: 'string' }
                   }
                 }
               }
             },
-            paths: { type: Sequelize.JSON },
-            components: { type: Sequelize.JSON }
+            paths: { type: 'object' },
+            components: { type: 'object' }
           }
         }
       }

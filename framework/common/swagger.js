@@ -1,7 +1,6 @@
 const _ = require('lodash')
 const readDirFilenames = require('read-dir-filenames')
 const path = require('path')
-const jsonSchema = require('./transform')
 
 const resTypeList = ['array', 'object', 'number', 'string', 'html']
 
@@ -13,22 +12,27 @@ const generateSwaggerDoc = async (info, paths) => {
   const methods = await docPaths.reduce(async (methodRetPromise, docPath) => {
     const methodRet = await methodRetPromise
     // eslint-disable-next-line import/no-dynamic-require, global-require
-    const model = require(docPath)
+    const { model, remoteMethods } = require(docPath)
     const schemaName = _.upperFirst(path.basename(docPath).replace(/\.\w+$/, ''))
-    if (model.model) {
-      components.schemas[schemaName] = jsonSchema.convert(model.model)
+    if (model) {
+      components.schemas[schemaName] = {
+        type: 'object',
+        properties: model
+      }
     }
-    if (model.remoteMethods) {
-      await Object.entries(model.remoteMethods)
-        .reduce(async (promise, [schemaKey, schemaValue]) => {
+    if (remoteMethods) {
+      await Object.entries(remoteMethods)
+        .reduce(async (promise, [, schemaValue]) => {
           await promise
           const content = {
             tags: schemaValue.tags || '',
             summary: schemaValue.summary || ''
           }
           if (schemaValue.query || schemaValue.params) {
-            const params = schemaValue.query
-              ? jsonSchema.convert(schemaValue.query) : jsonSchema.convert(schemaValue.params)
+            const params = {
+              type: 'object',
+              properties: schemaValue.query ? schemaValue.query : schemaValue.params
+            }
             content.parameters = Object.entries(params.properties)
               .reduce((ret, [propKey, propValue]) => {
                 ret.push({
@@ -44,7 +48,10 @@ const generateSwaggerDoc = async (info, paths) => {
               }, [])
           }
           if (schemaValue.requestBody) {
-            const params = jsonSchema.convert(schemaValue.requestBody.body)
+            const params = {
+              type: 'object',
+              properties: schemaValue.requestBody.body
+            }
             content.requestBody = {
               required: true,
               content: {
@@ -84,11 +91,11 @@ const generateSwaggerDoc = async (info, paths) => {
                 if (responseValue.type === 'array') {
                   outputSchema = {
                     type: 'array',
-                    items: responseValue.result ? jsonSchema.convert(responseValue.result) : { type: 'object', properties: {} }
+                    items: { type: 'object', properties: responseValue.result || {} }
                   }
                 }
                 if (responseValue.type === 'object') {
-                  outputSchema = responseValue.result ? jsonSchema.convert(responseValue.result) : { type: 'object', properties: {} }
+                  outputSchema = { type: 'object', properties: responseValue.result || {} }
                 }
                 if (responseValue.type === 'number') {
                   outputSchema = { type: 'object', properties: { result: { type: 'number', description: '返回标识' } } }

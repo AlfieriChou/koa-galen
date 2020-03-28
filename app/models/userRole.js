@@ -1,13 +1,12 @@
-const Sequelize = require('sequelize')
 const _ = require('lodash')
 
 const model = {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  roleId: { type: Sequelize.INTEGER, comment: '权限id' },
-  userId: { type: Sequelize.INTEGER, comment: '用户id' },
-  createdAt: { type: Sequelize.DATE, allowNull: false },
-  updatedAt: { type: Sequelize.DATE, allowNull: false },
-  deletedAt: { type: Sequelize.DATE }
+  id: { type: 'integer', autoIncrement: true, primaryKey: true },
+  roleId: { type: 'integer', comment: '权限id' },
+  userId: { type: 'integer', comment: '用户id' },
+  createdAt: { type: 'date', allowNull: false },
+  updatedAt: { type: 'date', allowNull: false },
+  deletedAt: { type: 'date' }
 }
 
 module.exports = {
