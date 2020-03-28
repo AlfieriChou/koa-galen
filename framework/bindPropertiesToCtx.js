@@ -1,7 +1,7 @@
 const fs = require('fs')
 const assert = require('assert')
 
-const initializeModel = require('./model')
+const initializeModel = require('./buildModels')
 const classLoader = require('./classLoader')
 
 module.exports = (app, config) => {
@@ -15,7 +15,7 @@ module.exports = (app, config) => {
     assert(config.mysql.user)
     assert(config.mysql.password)
     // eslint-disable-next-line no-param-reassign
-    app.context.models = initializeModel(config, modelDirPath)
+    app.context.models = initializeModel(modelDirPath, app.context)
   }
   if (fs.existsSync(controllerDirPath)) {
     // eslint-disable-next-line no-param-reassign

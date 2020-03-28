@@ -1,5 +1,5 @@
-const initializeApp = require('./app')
-const { BaseController } = require('./common')
+const initializeApp = require('./initializeApp')
+const BaseController = require('./baseController')
 
 module.exports = {
   BaseController,

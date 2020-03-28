@@ -2,11 +2,10 @@ const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const koaLogger = require('koa-logger')
 const koabody = require('koa-body')
-const views = require('koa-views')
 const path = require('path')
 
 const bindPropertiesToCtx = require('./bindPropertiesToCtx')
-const apiLoader = require('./router')
+const apiLoader = require('./dynamicRouter')
 
 module.exports = (baseConfig) => {
   const config = {
@@ -21,7 +20,7 @@ module.exports = (baseConfig) => {
   bindPropertiesToCtx(app, config)
   const api = apiLoader(config.modelDirPath, '/v1')
 
-  app.middlewareNames = ['cors', 'logger', 'views', 'body', 'api', 'bodyParser']
+  app.middlewareNames = ['cors', 'logger', 'body', 'api', 'bodyParser']
   app.middlewareFuncs = {
     cors: async (ctx, next) => {
       if (ctx.request.method === 'OPTIONS') {
@@ -44,7 +43,6 @@ module.exports = (baseConfig) => {
       }
     },
     logger: koaLogger(),
-    views: views(config.viewDirpath, { map: { html: 'nunjucks' } }),
     body: koabody({}),
     api: api.middleware(),
     bodyParser: bodyParser()
