@@ -10,14 +10,13 @@ const seqielizeTypes = {
   array: Sequelize.ARRAY
 }
 
-const jsonToModel = model => Object.entries(model).reduce((ret, [key, value]) => {
-  // eslint-disable-next-line no-param-reassign
-  ret[key] = {
+const jsonToModel = model => Object.entries(model).reduce((ret, [key, value]) => ({
+  ...ret,
+  [key]: {
     ...value,
     type: seqielizeTypes[value.type]
   }
-  return ret
-}, {})
+}), {})
 
 module.exports = (config, modelDirPath) => {
   const {
@@ -44,9 +43,10 @@ module.exports = (config, modelDirPath) => {
       return ret
     }
     const model = sequelizeModel.createModel(sequelize, jsonToModel)
-    // eslint-disable-next-line no-param-reassign
-    ret[model.name] = model
-    return ret
+    return {
+      ...ret,
+      [model.name]: model
+    }
   }, {})
   Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
