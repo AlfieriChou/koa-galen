@@ -48,17 +48,13 @@ const generateSwaggerDoc = async (info, paths) => {
               }, [])
           }
           if (schemaValue.requestBody) {
-            const params = {
-              type: 'object',
-              properties: schemaValue.requestBody.body
-            }
             content.requestBody = {
               required: true,
               content: {
                 'application/json': {
                   schema: {
-                    type: params.type,
-                    properties: params.properties,
+                    type: 'object',
+                    properties: schemaValue.requestBody.body,
                     required: schemaValue.requestBody.required
                   }
                 }
