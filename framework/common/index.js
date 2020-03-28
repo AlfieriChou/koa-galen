@@ -1,6 +1,5 @@
 const BaseController = require('./baseController')
 const generateSwaggerDoc = require('./swagger')
-const { convert } = require('./transform')
 const camelizeKeys = require('./camellizeKeys')
 
 const intersection = (a, b) => {
@@ -11,7 +10,6 @@ const intersection = (a, b) => {
 module.exports = {
   BaseController,
   generateSwaggerDoc,
-  convert,
   intersection,
   camelizeKeys
 }
