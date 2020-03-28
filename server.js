@@ -4,7 +4,7 @@ const jwtVerifyMiddleware = require('./middleware/jwtVerify')
 const authMiddleware = require('./middleware/auth')
 
 const bootstrap = async () => {
-  const app = initializeApp(config)
+  const app = await initializeApp(config)
   const apiIndex = app.middlewareNames.indexOf('api')
   app.middlewareNames.splice(
     apiIndex, 0, 'auth', 'jwtVerify'

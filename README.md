@@ -16,14 +16,16 @@
 * docs
   * model.md
 * framework
-  * common
-  * views
-  * app.js
+  * baseController.js
   * bindPropertiesToCtx.js
+  * buildModels.js
+  * buildSwaggerDoc.js
   * classLoader.js
+  * common.js
+  * dynamicRouter.js
   * index.js
-  * model.js
-  * router.js
+  * inutializeApp.js
+  * parseQueryFilter.js
 * middleware
 * server.js
 * package.json
