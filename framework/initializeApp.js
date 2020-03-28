@@ -7,7 +7,7 @@ const path = require('path')
 const bindPropertiesToCtx = require('./bindPropertiesToCtx')
 const apiLoader = require('./dynamicRouter')
 
-module.exports = (baseConfig) => {
+module.exports = async (baseConfig) => {
   const config = {
     viewDirpath: path.resolve(__dirname, './views'),
     modelDirPath: path.resolve(__dirname, '../app/models'),
@@ -18,7 +18,7 @@ module.exports = (baseConfig) => {
 
   const app = new Koa()
   bindPropertiesToCtx(app, config)
-  const api = apiLoader(config.modelDirPath, '/v1')
+  const api = await apiLoader(app.context, '/v1')
 
   app.middlewareNames = ['cors', 'logger', 'body', 'api', 'bodyParser']
   app.middlewareFuncs = {

@@ -43,9 +43,9 @@ module.exports = (modelDirPath, ctx) => {
   const db = paths.reduce((ret, file) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const { model, createModel, remoteMethods } = require(file)
-    const modelName = _.upperFirst(path.basename(file).replace(/\.\w+$/, ''))
+    const modelName = path.basename(file).replace(/\.\w+$/, '')
     if (model) {
-      ctx.jsonSchemas[modelName] = {
+      ctx.jsonSchemas[_.upperFirst(modelName)] = {
         type: 'object', properties: model
       }
     }

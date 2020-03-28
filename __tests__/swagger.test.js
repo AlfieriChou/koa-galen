@@ -4,7 +4,7 @@ const { initializeApp } = require('../framework')
 let server
 
 beforeAll(async () => {
-  const app = initializeApp(config)
+  const app = await initializeApp(config)
   await app.loadMiddlewares(app)
   server = app.listen(4000)
 })
