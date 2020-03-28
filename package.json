@@ -28,6 +28,7 @@
     "@commitlint/config-conventional": "^8.3.4",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-standard": "^3.0.1",
+    "eslint-friendly-formatter": "^4.0.1",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.7",
@@ -37,7 +38,6 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
-    "eslint-friendly-formatter": "^4.0.1",
     "expire-store": "^1.0.2",
     "jsonschema": "^1.2.5",
     "jsonwebtoken": "^8.5.1",
