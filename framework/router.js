@@ -4,7 +4,7 @@ const path = require('path')
 const { Validator } = require('jsonschema')
 const _ = require('lodash')
 const {
-  generateSwaggerDoc, convert, camelizeKeys, BaseController, intersection
+  generateSwaggerDoc, camelizeKeys, BaseController, intersection
 } = require('./common')
 
 const v = new Validator()
@@ -25,7 +25,7 @@ const validate = async apiInfo => async (ctx, next) => {
     return next()
   }
   const { body, required = [] } = apiInfo.requestBody
-  const jsonSchema = convert(body)
+  const jsonSchema = { type: 'object', properties: body }
   jsonSchema.required = required
   const validateRet = await v.validate(ctx.request.body, jsonSchema)
   if (validateRet.errors.length > 0) {
@@ -81,21 +81,27 @@ module.exports = (modelDirPath, prefix = '/v1') => {
             apiInfo.path,
             await checkRoles(apiInfo),
             await validate(apiInfo),
+            // eslint-disable-next-line consistent-return
             async (ctx) => {
-              let ret
               if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
-                ret = await ctx.controller[modelName][handler](ctx)
+                const ret = await ctx.controller[modelName][handler](ctx)
+                // eslint-disable-next-line no-return-assign
+                return ctx.body = {
+                  status: 200,
+                  message: 'success',
+                  result: camelizeKeys(ret)
+                }
               }
               if (BaseController[handler]) {
-                ret = await BaseController[handler](ctx, _.upperFirst(modelName))
-              } else {
-                ctx.throw(404, 'not found')
+                const ret = await BaseController[handler](ctx, _.upperFirst(modelName))
+                // eslint-disable-next-line no-return-assign
+                return ctx.body = {
+                  status: 200,
+                  message: 'success',
+                  result: camelizeKeys(ret)
+                }
               }
-              ctx.body = {
-                status: 200,
-                message: 'success',
-                result: camelizeKeys(ret)
-              }
+              ctx.throw(404, 'not found')
             }
           )
         }, Promise.resolve())

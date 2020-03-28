@@ -1,6 +1,24 @@
 const Sequelize = require('sequelize')
 const readDirFilenames = require('read-dir-filenames')
 
+const seqielizeTypes = {
+  integer: Sequelize.INTEGER,
+  string: Sequelize.STRING,
+  date: Sequelize.DATE,
+  boolean: Sequelize.BOOLEAN,
+  json: Sequelize.JSON,
+  array: Sequelize.ARRAY
+}
+
+const jsonToModel = model => Object.entries(model).reduce((ret, [key, value]) => {
+  // eslint-disable-next-line no-param-reassign
+  ret[key] = {
+    ...value,
+    type: seqielizeTypes[value.type]
+  }
+  return ret
+}, {})
+
 module.exports = (config, modelDirPath) => {
   const {
     mysql: {
@@ -25,7 +43,7 @@ module.exports = (config, modelDirPath) => {
     if (!sequelizeModel.createModel) {
       return ret
     }
-    const model = sequelizeModel.createModel(sequelize)
+    const model = sequelizeModel.createModel(sequelize, jsonToModel)
     // eslint-disable-next-line no-param-reassign
     ret[model.name] = model
     return ret

@@ -11,8 +11,8 @@ const model = {
 
 module.exports = {
   model,
-  createModel: (sequelize) => {
-    const UserRole = sequelize.define('UserRole', model, {
+  createModel: (sequelize, jsonToModel) => {
+    const UserRole = sequelize.define('UserRole', jsonToModel(model), {
       underscored: true,
       tableName: 'user_role'
     })

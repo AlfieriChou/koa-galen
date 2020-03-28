@@ -12,8 +12,8 @@ const model = {
 
 module.exports = {
   model,
-  createModel: (sequelize) => {
-    const User = sequelize.define('User', model, {
+  createModel: (sequelize, jsonToModel) => {
+    const User = sequelize.define('User', jsonToModel(model), {
       underscored: true,
       tableName: 'user'
     })
