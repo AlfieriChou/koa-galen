@@ -2,23 +2,8 @@ const Sequelize = require('sequelize')
 const readDirFilenames = require('read-dir-filenames')
 const _ = require('lodash')
 const path = require('path')
-
-const seqielizeTypes = {
-  integer: Sequelize.INTEGER,
-  string: Sequelize.STRING,
-  date: Sequelize.DATE,
-  boolean: Sequelize.BOOLEAN,
-  json: Sequelize.JSON,
-  array: Sequelize.ARRAY
-}
-
-const jsonToModel = model => Object.entries(model).reduce((ret, [key, value]) => ({
-  ...ret,
-  [key]: {
-    ...value,
-    type: seqielizeTypes[value.type]
-  }
-}), {})
+const createModel = require('./models/createModel')
+const buildRelations = require('./models/relations')
 
 module.exports = (modelDirPath, ctx) => {
   const {
@@ -26,7 +11,8 @@ module.exports = (modelDirPath, ctx) => {
       host, database, user, password
     }
   } = ctx.config
-  ctx.jsonSchemas = {}
+  ctx.schemas = {}
+  ctx.modelSchemas = {}
   ctx.remoteMethods = {}
   const sequelize = new Sequelize(database, user, password, {
     host,
@@ -42,34 +28,39 @@ module.exports = (modelDirPath, ctx) => {
   const paths = readDirFilenames(modelDirPath, { ignore: 'index.js' })
   const db = paths.reduce((ret, file) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
-    const { model, createModel, remoteMethods } = require(file)
-    const modelName = path.basename(file).replace(/\.\w+$/, '')
-    if (model) {
-      ctx.jsonSchemas[_.upperFirst(modelName)] = {
-        type: 'object', properties: model
-      }
+    const schema = require(file)
+    const filename = path.basename(file).replace(/\.\w+$/, '')
+    if (!schema.modelName) {
+      schema.modelName = _.upperFirst(filename)
     }
+    if (!schema.tableName) {
+      schema.tableName = _.snakeCase(filename)
+    }
+    const { remoteMethods, modelName, model } = schema
     if (remoteMethods) {
       ctx.remoteMethods = {
         ...ctx.remoteMethods,
         ...Object.entries(remoteMethods).reduce((acc, [key, value]) => ({
           ...acc,
-          [`${modelName}-${key}`]: value
+          [`${filename}-${key}`]: value
         }), {})
       }
     }
-    if (!createModel) {
+    if (!schema.model) {
       return ret
     }
-    const sequelizeModel = createModel(sequelize, jsonToModel)
+    ctx.modelSchemas[modelName] = schema
+    ctx.schemas[modelName] = {
+      type: 'object', properties: model
+    }
     return {
       ...ret,
-      [sequelizeModel.name]: sequelizeModel
+      [modelName]: createModel(schema, sequelize)
     }
   }, {})
-  Object.keys(db).forEach((modelName) => {
-    if (db[modelName].associate) {
-      db[modelName].associate(db)
+  Object.entries(ctx.modelSchemas).forEach(([, { modelName, relations }]) => {
+    if (relations) {
+      buildRelations({ modelName, relations }, db)
     }
   })
   db.sequelize = sequelize

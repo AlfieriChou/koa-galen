@@ -11,16 +11,15 @@ const model = {
 
 module.exports = {
   model,
-  createModel: (sequelize, jsonToModel) => {
-    const UserRole = sequelize.define('UserRole', jsonToModel(model), {
-      underscored: true,
-      tableName: 'user_role'
-    })
-    UserRole.associate = (models) => {
-      UserRole.belongsTo(models.Role)
-      UserRole.belongsTo(models.User)
+  relations: {
+    user: {
+      type: 'belongsTo',
+      model: 'User'
+    },
+    role: {
+      type: 'belongsTo',
+      model: 'Role'
     }
-    return UserRole
   },
   remoteMethods: {
     create: {

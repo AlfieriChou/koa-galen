@@ -29,7 +29,11 @@ const validate = async apiInfo => async (ctx, next) => {
   jsonSchema.required = required
   const validateRet = await v.validate(ctx.request.body, jsonSchema)
   if (validateRet.errors.length > 0) {
-    ctx.throw(400, validateRet.errors[0].message)
+    const errMsg = validateRet.errors.reduce((acc, error, index) => ([
+      ...acc,
+      `${index + 1}: ${error.message}`
+    ]), []).join()
+    ctx.throw(400, errMsg)
   }
   return next()
 }
@@ -159,21 +163,21 @@ module.exports = async (context, prefix = '/v1') => {
         async (ctx) => {
           if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
             const ret = await ctx.controller[modelName][handler](ctx)
-            // eslint-disable-next-line no-return-assign
-            return ctx.body = {
+            ctx.body = {
               status: 200,
               message: 'success',
               result: camelizeKeys(ret)
             }
+            return
           }
           if (BaseController[handler]) {
             const ret = await BaseController[handler](ctx, _.upperFirst(modelName))
-            // eslint-disable-next-line no-return-assign
-            return ctx.body = {
+            ctx.body = {
               status: 200,
               message: 'success',
               result: camelizeKeys(ret)
             }
+            return
           }
           ctx.throw(404, 'not found')
         }

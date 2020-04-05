@@ -3,7 +3,7 @@ const _ = require('lodash')
 const resTypeList = ['array', 'object', 'number', 'string', 'html']
 
 const buildSwaggerDoc = async (info, ctx) => {
-  const { jsonSchemas, remoteMethods } = ctx
+  const { schemas, remoteMethods } = ctx
   const methods = await Object.entries(remoteMethods)
     .reduce(async (promise, [schemaKey, schemaValue]) => {
       const methodRet = await promise
@@ -104,7 +104,7 @@ const buildSwaggerDoc = async (info, ctx) => {
     info,
     paths: methods.reduce((acc, method) => _.merge(acc, method), {}),
     components: {
-      schemas: jsonSchemas
+      schemas
     }
   }
 }
