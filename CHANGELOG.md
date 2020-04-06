@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/AlfieriChou/koa-galen/compare/v2.2.1...v3.0.0) (2020-04-06)
+
+
+### Features
+
+* validate mysql config ([608f055](https://github.com/AlfieriChou/koa-galen/commit/608f055235b7ada172b1e46961b75c1603b81d4f))
+
+
+### Bug Fixes
+
+* project root path ([9515f10](https://github.com/AlfieriChou/koa-galen/commit/9515f103a204cddda9b642cb9c91a915fdb06964))
+* sequelize model associate ([8090d48](https://github.com/AlfieriChou/koa-galen/commit/8090d48305b52b4bbb4c299b29c637cfeb903e61))
+
 ### [2.2.1](https://github.com/AlfieriChou/koa-galen/compare/v2.2.0...v2.2.1) (2020-03-28)
 
 ## 2.2.0 (2020-03-28)
