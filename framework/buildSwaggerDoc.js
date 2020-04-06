@@ -72,7 +72,9 @@ const buildSwaggerDoc = async (info, ctx) => {
             if (type === 'array') {
               outputSchema = {
                 type: 'array',
-                items: result
+                items: result || {
+                  type: 'string'
+                }
               }
             }
             if (type === 'object') {
