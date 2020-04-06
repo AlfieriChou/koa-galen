@@ -2,9 +2,9 @@ const _ = require('lodash')
 
 const model = {
   id: { type: 'integer', autoIncrement: true, primaryKey: true },
-  phone: { type: 'string', length: 11, comment: '手机号' },
-  password: { type: 'string', length: 32, comment: '密码' },
-  nickname: { type: 'string', length: 32, comment: '昵称' },
+  phone: { type: 'string', length: 11, description: '手机号' },
+  password: { type: 'string', length: 32, description: '密码' },
+  nickname: { type: 'string', length: 32, description: '昵称' },
   createdAt: { type: 'date', allowNull: false },
   updatedAt: { type: 'date', allowNull: false },
   deletedAt: { type: 'date' }
@@ -31,21 +31,21 @@ module.exports = {
       tags: ['user'],
       summary: '获取用户列表',
       query: {
-        where: { type: 'json', comment: '搜索条件 例如：where={}' },
-        order: { type: 'array', comment: '排序 例如：order=[["createdAt","desc"]]' },
-        attribute: { type: 'array', comment: '返回字段控制 例如：attribute=["id"]' },
-        include: { type: 'array', comment: '关联表 关联查询 例如：include=[{"model":"UserRole"}]' },
-        offset: { type: 'integer', comment: '分页偏移量 例如：offset=0' },
-        limit: { type: 'integer', comment: '分页数量 例如：limit=20' }
+        where: { type: 'json', description: '搜索条件 例如：where={}' },
+        order: { type: 'array', description: '排序 例如：order=[["createdAt","desc"]]' },
+        attribute: { type: 'array', description: '返回字段控制 例如：attribute=["id"]' },
+        include: { type: 'array', description: '关联表 关联查询 例如：include=[{"model":"UserRole"}]' },
+        offset: { type: 'integer', description: '分页偏移量 例如：offset=0' },
+        limit: { type: 'integer', description: '分页数量 例如：limit=20' }
       },
       output: {
         200: {
           type: 'object',
           result: {
-            count: { type: 'integer', comment: '总数' },
-            offset: { type: 'integer', comment: '偏移量' },
-            limit: { type: 'integer', comment: '限制数量' },
-            datas: { type: 'array', items: { type: 'object', properties: model }, comment: '数据' }
+            count: { type: 'integer', description: '总数' },
+            offset: { type: 'integer', description: '偏移量' },
+            limit: { type: 'integer', description: '限制数量' },
+            datas: { type: 'array', items: { type: 'object', properties: model }, description: '数据' }
           }
         }
       }
@@ -90,7 +90,10 @@ module.exports = {
       },
       output: {
         200: {
-          type: 'array'
+          type: 'array',
+          result: {
+            type: 'number'
+          }
         }
       }
     },

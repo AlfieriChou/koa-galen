@@ -1,62 +1,64 @@
 const _ = require('lodash')
+const assert = require('assert')
 
 const resTypeList = ['array', 'object', 'number', 'string', 'html']
 
 const buildSwaggerDoc = async (info, ctx) => {
   const { schemas, remoteMethods } = ctx
   const methods = await Object.entries(remoteMethods)
-    .reduce(async (promise, [schemaKey, schemaValue]) => {
+    .reduce(async (promise, [schemaKey, {
+      path, method, tags, summary, query, params, requestBody, output
+    }]) => {
+      assert(path, `${schemaKey} path is required`)
+      assert(method, `${schemaKey} method is required`)
       const methodRet = await promise
       const content = {
-        tags: schemaValue.tags || '',
-        summary: schemaValue.summary || ''
+        tags: tags || ['default'],
+        summary: summary || ''
       }
-      if (schemaValue.query || schemaValue.params) {
-        const params = {
-          type: 'object',
-          properties: schemaValue.query ? schemaValue.query : schemaValue.params
-        }
-        content.parameters = Object.entries(params.properties)
-          .reduce((ret, [propKey, propValue]) => {
-            ret.push({
+      if (query || params) {
+        content.parameters = Object.entries(query || params)
+          .reduce((ret, [propKey, propValue]) => (
+            [...ret, {
               name: propKey,
-              in: schemaValue.query ? 'query' : 'path',
+              in: query ? 'query' : 'path',
               description: propValue.description,
               schema: {
                 type: propValue.type
               },
-              required: !schemaValue.query
-            })
-            return ret
-          }, [])
+              required: !query
+            }]
+          ), [])
       }
-      if (schemaValue.requestBody) {
+      if (requestBody) {
         content.requestBody = {
           required: true,
           content: {
             'application/json': {
               schema: {
                 type: 'object',
-                properties: schemaValue.requestBody.body,
-                required: schemaValue.requestBody.required
+                properties: requestBody.body,
+                required: requestBody.required
               }
             }
           }
         }
       }
-      if (schemaValue.output) {
-        content.responses = await Object.entries(schemaValue.output)
-          .reduce(async (resPromise, [responseKey, responseValue]) => {
+      if (output) {
+        content.responses = await Object.entries(output)
+          .reduce(async (resPromise, [responseKey, { type, result }]) => {
             const outputDatas = await resPromise
-            if (!resTypeList.includes(responseValue.type)) throw new Error('output type mast ba array or object or number or string or html!')
-            if (responseValue.type === 'html') {
-              outputDatas[responseKey] = {
-                description: 'response success',
-                content: {
-                  'text/html': {}
+            if (!resTypeList.includes(type)) throw new Error('output type mast ba array or object or number or string or html!')
+            if (type === 'html') {
+              return {
+                ...outputDatas,
+                [responseKey]: {
+                  description: 'response success',
+                  content: {
+                    'text/html': {}
+                  }
                 }
               }
-              return outputDatas
             }
             outputDatas[200] = {
               description: 'response success',
@@ -67,35 +69,37 @@ const buildSwaggerDoc = async (info, ctx) => {
               }
             }
             let outputSchema
-            if (responseValue.type === 'array') {
+            if (type === 'array') {
               outputSchema = {
                 type: 'array',
-                items: { type: 'object', properties: responseValue.result || {} }
+                items: result
               }
             }
-            if (responseValue.type === 'object') {
-              outputSchema = { type: 'object', properties: responseValue.result || {} }
+            if (type === 'object') {
+              outputSchema = { type: 'object', properties: result || {} }
             }
-            if (responseValue.type === 'number') {
+            if (type === 'number') {
               outputSchema = { type: 'object', properties: { result: { type: 'number', description: '返回标识' } } }
             }
-            if (responseValue.type === 'string') {
+            if (type === 'string') {
               outputSchema = { type: 'object', properties: { result: { type: 'string', description: '返回标识' } } }
             }
-            outputDatas[responseKey] = {
-              description: 'response success',
-              content: {
-                'application/json': {
-                  schema: outputSchema
+            return {
+              ...outputDatas,
+              [responseKey]: {
+                description: 'response success',
+                content: {
+                  'application/json': {
+                    schema: outputSchema
+                  }
                 }
               }
             }
-            return outputDatas
           }, Promise.resolve({}))
       }
       const swaggerItem = {}
-      swaggerItem[schemaValue.path] = {}
-      swaggerItem[schemaValue.path][schemaValue.method] = content
+      swaggerItem[path] = {}
+      swaggerItem[path][method] = content
       methodRet.push(swaggerItem)
       return methodRet
     }, Promise.resolve([]))
