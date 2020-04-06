@@ -11,15 +11,6 @@ const model = {
 
 module.exports = {
   model,
-  createModel: (sequelize, jsonToModel) => {
-    const Role = sequelize.define('Role', jsonToModel(model), {
-      timestamps: true,
-      paranoid: true,
-      underscored: true,
-      tableName: 'role'
-    })
-    return Role
-  },
   remoteMethods: {
     index: {
       path: '/roles',

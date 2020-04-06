@@ -13,7 +13,7 @@ const model = {
 module.exports = {
   model,
   relations: {
-    userRole: {
+    userRoles: {
       type: 'hasMany',
       model: 'UserRole'
     },
