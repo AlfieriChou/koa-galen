@@ -6,7 +6,7 @@ const mysqlConfigSchema = {
   type: 'object',
   properties: {
     host: { type: 'string' },
-    db: { type: 'string' },
+    database: { type: 'string' },
     user: { type: 'string' },
     password: { type: 'string' },
     debug: { type: 'boolean' },
@@ -18,7 +18,7 @@ const mysqlConfigSchema = {
       }
     }
   },
-  required: ['host', 'db', 'user', 'password']
+  required: ['host', 'database', 'user', 'password']
 }
 
 module.exports = async (config) => {

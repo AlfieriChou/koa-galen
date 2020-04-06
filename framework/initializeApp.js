@@ -18,10 +18,10 @@ module.exports = async (baseConfig) => {
   }
 
   const app = new Koa()
-  bindPropertiesToCtx(app, config)
+  await bindPropertiesToCtx(app, config)
   const api = await apiLoader(app.context, config.prefix || '/v1')
 
-  app.middlewareNames = ['cors', 'logger', 'body', 'api', 'bodyParser']
+  app.coreMiddlewares = ['cors', 'logger', 'body', 'api', 'bodyParser']
   app.middlewareFuncs = {
     cors: async (ctx, next) => {
       if (ctx.request.method === 'OPTIONS') {
@@ -50,7 +50,7 @@ module.exports = async (baseConfig) => {
   }
 
   app.loadMiddlewares = async (application) => {
-    await application.middlewareNames.reduce(async (promise, middlewareName) => {
+    await application.coreMiddlewares.reduce(async (promise, middlewareName) => {
       await promise
       application.use(application.middlewareFuncs[middlewareName])
     }, Promise.resolve())

@@ -4,17 +4,17 @@ const _ = require('lodash')
 const path = require('path')
 const createModel = require('./models/createModel')
 const buildRelations = require('./models/relations')
+const validateConfig = require('./models/validateConfig')
 
-module.exports = (modelDirPath, ctx) => {
-  const {
-    mysql: {
-      host, database, user, password
-    }
-  } = ctx.config
+module.exports = async (modelDirPath, ctx) => {
+  await validateConfig(ctx.config.mysql)
   ctx.schemas = {}
   ctx.modelSchemas = {}
   ctx.remoteMethods = {}
-  const sequelize = new Sequelize(database, user, password, {
+  const {
+    database, user, password, host, pool, debug
+  } = ctx.config.mysql
+  const options = {
     host,
     dialect: 'mysql',
     pool: {
@@ -23,10 +23,20 @@ module.exports = (modelDirPath, ctx) => {
       idle: 10000
     },
     logging: false
-  })
+  }
+  if (debug) {
+    options.logging = true
+  }
+  if (pool) {
+    options.pool = {
+      max: pool.max,
+      min: pool.min
+    }
+  }
+  const sequelize = new Sequelize(database, user, password, options)
 
   const paths = readDirFilenames(modelDirPath, { ignore: 'index.js' })
-  const db = paths.reduce((ret, file) => {
+  const db = await paths.reduce((ret, file) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const schema = require(file)
     const filename = path.basename(file).replace(/\.\w+$/, '')

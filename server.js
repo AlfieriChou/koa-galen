@@ -5,8 +5,8 @@ const authMiddleware = require('./middleware/auth')
 
 const bootstrap = async () => {
   const app = await initializeApp(config)
-  const apiIndex = app.middlewareNames.indexOf('api')
-  app.middlewareNames.splice(
+  const apiIndex = app.coreMiddlewares.indexOf('api')
+  app.coreMiddlewares.splice(
     apiIndex, 0, 'auth', 'jwtVerify'
   )
   app.middlewareFuncs = {
