@@ -7,7 +7,7 @@ const bootstrap = async () => {
   const app = await initializeApp(config)
   const apiIndex = app.coreMiddlewares.indexOf('api')
   app.coreMiddlewares.splice(
-    apiIndex, 0, 'auth', 'jwtVerify'
+    apiIndex, 0, 'jwtVerify', 'auth'
   )
   app.middlewareFuncs = {
     ...app.middlewareFuncs,

@@ -17,7 +17,7 @@ module.exports = {
       type: 'hasMany',
       model: 'UserRole'
     },
-    role: {
+    roles: {
       type: 'belongsToMany',
       model: 'Role',
       through: 'UserRole',

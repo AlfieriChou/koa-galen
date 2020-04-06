@@ -7,7 +7,8 @@ class User {
       const userRet = await ctx.models.User.findOne({
         where: { phone },
         include: [{
-          model: ctx.models.Role
+          model: ctx.models.Role,
+          as: 'roles'
         }]
       })
       user = userRet.toJSON()

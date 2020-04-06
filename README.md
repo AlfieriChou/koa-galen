@@ -16,6 +16,10 @@
 * docs
   * model.md
 * framework
+  * models
+    * createModel.js
+    * relations.js
+    * validateConfig.js
   * baseController.js
   * bindPropertiesToCtx.js
   * buildModels.js
