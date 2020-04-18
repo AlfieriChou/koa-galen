@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/AlfieriChou/koa-galen/compare/v3.2.0...v3.2.1) (2020-04-18)
+
+
+### Bug Fixes
+
+* query filter ([b4fa170](https://github.com/AlfieriChou/koa-galen/commit/b4fa17011c0ed849dceec8faf01ea4c56f3267a2))
+
 ## [3.2.0](https://github.com/AlfieriChou/koa-galen/compare/v2.1.0...v3.2.0) (2020-04-18)
 
 
