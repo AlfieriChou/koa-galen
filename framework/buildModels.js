@@ -5,7 +5,7 @@ const path = require('path')
 const createModel = require('./models/createModel')
 const buildRelations = require('./models/relations')
 const validateConfig = require('./models/validateConfig')
-const buildCrudReoteMethods = require('./crudRemoteMethods')
+const buildCrudReoteMethods = require('./models/crudRemoteMethods')
 
 module.exports = async (modelDirPath, ctx) => {
   await validateConfig(ctx.config.mysql)

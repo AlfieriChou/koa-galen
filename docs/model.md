@@ -2,6 +2,11 @@
 
 * auto generate sequelize model by model json schema
 
+## type
+
+* virtual
+  don't create CRUD api methods.
+
 ## model
 
 ```javascript
