@@ -82,7 +82,7 @@ const parseIncludes = (datas, ctx) => datas.map((data) => {
 const parseQuery = (query, ctx) => {
   const filter = {
     subQuery: false,
-    distinct: true,
+    // distinct: true,
     offset: 0,
     limit: 10
   }
