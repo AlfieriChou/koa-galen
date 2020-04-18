@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/AlfieriChou/koa-galen/compare/v2.1.0...v3.2.0) (2020-04-18)
+
+
+### Features
+
+* crud remoteMethods ([2188bdc](https://github.com/AlfieriChou/koa-galen/commit/2188bdc4a836433daa10586c0193dff52114a8d2))
+* validate mysql config ([608f055](https://github.com/AlfieriChou/koa-galen/commit/608f055235b7ada172b1e46961b75c1603b81d4f))
+
+
+### Bug Fixes
+
+* cache get userInfo ([49504e5](https://github.com/AlfieriChou/koa-galen/commit/49504e585ffdbc6b863d734c05006b24c8a41710))
+* project root path ([9515f10](https://github.com/AlfieriChou/koa-galen/commit/9515f103a204cddda9b642cb9c91a915fdb06964))
+* sequelize model associate ([8090d48](https://github.com/AlfieriChou/koa-galen/commit/8090d48305b52b4bbb4c299b29c637cfeb903e61))
+
 ## [3.1.0](https://github.com/AlfieriChou/koa-galen/compare/v3.0.1...v3.1.0) (2020-04-06)
 
 ### [3.0.1](https://github.com/AlfieriChou/koa-galen/compare/v3.0.0...v3.0.1) (2020-04-06)
