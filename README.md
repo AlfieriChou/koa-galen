@@ -18,6 +18,7 @@
 * framework
   * models
     * createModel.js
+    * crudRemoteMethods.js
     * relations.js
     * validateConfig.js
   * baseController.js
