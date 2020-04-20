@@ -53,6 +53,7 @@ module.exports = async (context, prefix = '/v1') => {
       if (modelName === 'swagger') {
         if (apiInfo.path === '/swagger.json') {
           api[apiInfo.method](apiInfo.path, async (ctx) => {
+            // TODO: add cache
             ctx.body = await buildSwaggerDoc({
               title: 'Koa-galen API document',
               version: 'v3',

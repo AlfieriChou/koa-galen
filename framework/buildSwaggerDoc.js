@@ -99,11 +99,14 @@ const buildSwaggerDoc = async (info, ctx) => {
             }
           }, Promise.resolve({}))
       }
-      const swaggerItem = {}
-      swaggerItem[path] = {}
-      swaggerItem[path][method] = content
-      methodRet.push(swaggerItem)
-      return methodRet
+      return [
+        ...methodRet,
+        {
+          [path]: {
+            [method]: content
+          }
+        }
+      ]
     }, Promise.resolve([]))
   return {
     openapi: '3.0.0',
