@@ -1,6 +1,6 @@
 {
   "name": "koa-galen",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "Koa galen.",
   "main": "index.js",
   "repository": "https://github.com/AlfieriChou/koa-galen",
