@@ -92,8 +92,8 @@ const buildCrudRemoteMethods = (apiName, {
 })
 
 module.exports = (apiName, schema) => {
-  const { type, remoteMethods = {} } = schema
-  if (type && type === 'virtual') {
+  const { dialect, remoteMethods = {} } = schema
+  if (dialect && dialect === 'virtual') {
     return remoteMethods
   }
   const crudRemoteMethods = buildCrudRemoteMethods(apiName, schema)

@@ -1,7 +1,7 @@
 module.exports = {
-  type: 'virtual',
+  dialect: 'virtual',
   remoteMethods: {
-    index: {
+    htmlDoc: {
       path: '/apidoc',
       method: 'get',
       tags: ['swagger'],
@@ -12,7 +12,7 @@ module.exports = {
         }
       }
     },
-    doc: {
+    jsonDoc: {
       path: '/swagger.json',
       method: 'get',
       tags: ['swagger'],

@@ -56,10 +56,10 @@ module.exports = async (modelDirPath, ctx) => {
         [`${filename}-${key}`]: value
       }), {})
     }
+    ctx.modelSchemas[modelName] = schema
     if (!schema.model) {
       return ret
     }
-    ctx.modelSchemas[modelName] = schema
     ctx.schemas[modelName] = {
       type: 'object', properties: model
     }
