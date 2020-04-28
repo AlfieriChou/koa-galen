@@ -1,20 +1,6 @@
 const _ = require('lodash')
 const Sequelize = require('sequelize')
-
-const deepMapKeys = (data, fn) => {
-  if (Array.isArray(data)) {
-    return data.map(val => deepMapKeys(val, fn))
-  }
-  if (typeof data === 'object') {
-    return Object.keys(data)
-      .reduce((acc, current) => {
-        const val = data[current]
-        acc[fn(current)] = val !== null && typeof val === 'object' ? deepMapKeys(val, fn) : (acc[fn(current)] = val)
-        return acc
-      }, {})
-  }
-  return data
-}
+const { deepMapKeys } = require('./common')
 
 const { Op } = Sequelize
 const optAliases = {
