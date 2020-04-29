@@ -6,6 +6,7 @@ const createModel = require('./models/createModel')
 const buildRelations = require('./models/relations')
 const validateConfig = require('./models/validateConfig')
 const buildCrudReoteMethods = require('./models/crudRemoteMethods')
+const migrateModel = require('./models/migrate')
 
 module.exports = async (modelDirPath, ctx) => {
   await validateConfig(ctx.config.mysql)
@@ -68,9 +69,12 @@ module.exports = async (modelDirPath, ctx) => {
       [modelName]: createModel(schema, sequelize)
     }
   }, {})
-  Object.entries(ctx.modelSchemas).forEach(([, { modelName, relations }]) => {
-    if (relations) {
-      buildRelations({ modelName, relations }, db)
+  Object.entries(ctx.modelSchemas).forEach(([, modelSchema]) => {
+    if (modelSchema.dialect !== 'virtual') {
+      migrateModel(modelSchema, sequelize.getQueryInterface(), ctx)
+    }
+    if (modelSchema.dialect !== 'virtual' && modelSchema.relations) {
+      buildRelations(modelSchema, db)
     }
   })
   db.sequelize = sequelize
