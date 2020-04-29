@@ -1,8 +1,14 @@
+const {
+  MYSQL_HOST,
+  MYSQL_PASSWORD,
+  MYSQL_USER
+} = process.env
+
 module.exports = {
   mysql: {
-    host: '127.0.0.1',
-    user: 'root',
-    password: '123456',
+    host: MYSQL_HOST,
+    user: MYSQL_USER,
+    password: MYSQL_PASSWORD,
     database: 'test'
   },
   port: process.env.PORT || 7000
