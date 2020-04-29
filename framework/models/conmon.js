@@ -15,11 +15,16 @@ const jsonToModel = (properties, keyFn) => Object.entries(properties)
     if (keyFn) {
       key = keyFn(key)
     }
+    let comment
+    if (value.description) {
+      comment = value.description
+    }
     return {
       ...ret,
       [key]: {
         ...value,
-        type: seqielizeTypes[value.type]
+        type: seqielizeTypes[value.type],
+        comment
       }
     }
   }, {})
