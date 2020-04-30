@@ -1,7 +1,8 @@
 const {
   MYSQL_HOST,
   MYSQL_PASSWORD,
-  MYSQL_USER
+  MYSQL_USER,
+  MYSQL_PORT
 } = process.env
 
 module.exports = {
@@ -9,7 +10,8 @@ module.exports = {
     host: MYSQL_HOST,
     user: MYSQL_USER,
     password: MYSQL_PASSWORD,
-    database: 'test'
+    database: 'test',
+    port: MYSQL_PORT
   },
   port: process.env.PORT || 7000
 }

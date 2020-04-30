@@ -14,10 +14,11 @@ module.exports = async (modelDirPath, ctx) => {
   ctx.modelSchemas = {}
   ctx.remoteMethods = {}
   const {
-    database, user, password, host, pool, debug
+    database, user, password, host, port, pool, debug
   } = ctx.config.mysql
   const options = {
     host,
+    port: port || 3306,
     dialect: 'mysql',
     pool: {
       max: 10,
