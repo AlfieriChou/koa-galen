@@ -1,8 +1,5 @@
-const Bcrypt = require('bcrypt')
-const { promisify } = require('util')
+const bcrypt = require('bcryptjs')
 const _ = require('lodash')
-
-const bcryptHash = promisify(Bcrypt.hash)
 
 const RECOMMENDED_ROUNDS = 12
 
@@ -17,14 +14,15 @@ const isBcryptHash = (str) => {
 
 module.exports = class Common {
   verifyPassword (hash, password) {
-    return Bcrypt.compareSync(password, hash)
+    return bcrypt.compareSync(password, hash)
   }
 
   async generateHash (password = '') {
     if (isBcryptHash(password)) {
       throw new Error('bcrypt tried to hash another bcrypt hash')
     }
-    return bcryptHash(password, RECOMMENDED_ROUNDS)
+    const salt = bcrypt.genSaltSync(RECOMMENDED_ROUNDS)
+    return bcrypt.hashSync(password, salt)
   }
 
   camelizeKeys (obj) {
