@@ -11,7 +11,7 @@ module.exports = {
     user: MYSQL_USER,
     password: MYSQL_PASSWORD,
     database: 'test',
-    port: MYSQL_PORT
+    port: parseInt(MYSQL_PORT, 10)
   },
   port: process.env.PORT || 3000
 }
