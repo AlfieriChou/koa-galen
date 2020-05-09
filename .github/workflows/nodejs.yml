@@ -45,7 +45,6 @@ jobs:
         tag_names: true
 
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
     needs: docker
     if: github.ref == 'refs/heads/master'
@@ -57,7 +56,6 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         password: ${{ secrets.DEPLOY_PASSWORD }}
         script: |
-          ls -a
           cd k8s-deploy
           make deploy-koa-gelan
         
