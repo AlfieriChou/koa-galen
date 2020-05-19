@@ -1,4 +1,4 @@
-const jsonToModel = require('./conmon')
+const { jsonToModel } = require('./conmon')
 
 module.exports = ({
   model, modelName, tableName, plugins

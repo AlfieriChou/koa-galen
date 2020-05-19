@@ -29,4 +29,7 @@ const jsonToModel = (properties, keyFn) => Object.entries(properties)
     }
   }, {})
 
-module.exports = jsonToModel
+module.exports = {
+  seqielizeTypes,
+  jsonToModel
+}

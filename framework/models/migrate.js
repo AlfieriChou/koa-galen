@@ -1,8 +1,9 @@
 const _ = require('lodash')
-const jsonToModel = require('./conmon')
+const { jsonToModel, seqielizeTypes } = require('./conmon')
 
 // TODO add cache
 const getTableNames = async sequelize => sequelize.showAllTables()
+const getTableInfo = async (tableName, sequelize) => sequelize.describeTable(tableName)
 
 module.exports = async ({
   model, tableName, relations
@@ -34,5 +35,19 @@ module.exports = async ({
   if (!allTableNames.includes(tableName)) {
     return sequelize.createTable(tableName, jsonToModel(migrateModel, _.snakeCase))
   }
-  // 有表 更新表字段信息
+  // change table columns properties
+  const tableInfo = await getTableInfo(tableName, sequelize)
+  Object.entries(migrateModel).reduce(async (promise, [key, value]) => {
+    await promise
+    // no column create column
+    const column = tableInfo[_.snakeCase(key)]
+    if (!column) {
+      await sequelize.addColumn(tableName, _.snakeCase(key), {
+        ...value,
+        type: seqielizeTypes[value.type]
+      })
+    } else {
+      // TODO modify field properties
+    }
+  }, Promise.resolve())
 }
