@@ -25,15 +25,15 @@ module.exports = class Common {
     return bcrypt.hashSync(password, salt)
   }
 
-  camelizeKeys (obj) {
+  camelObjKeys (obj) {
     if (Array.isArray(obj)) {
-      return obj.map(v => this.camelizeKeys(v))
+      return obj.map(v => this.camelObjKeys(v))
     }
     if (obj !== null && obj.constructor === Object) {
       return Object.keys(obj)
         .reduce((result, key) => ({
           ...result,
-          [_.camelCase(key)]: this.camelizeKeys(obj[key])
+          [_.camelCase(key)]: this.camelObjKeys(obj[key])
         }), {})
     }
     return obj

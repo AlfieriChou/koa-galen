@@ -15,7 +15,7 @@ let ROLE_ID
 
 beforeAll(async () => {
   const app = await initializeApp(config)
-  await app.loadMiddlewares(app)
+  await app.loadMiddleWares(app)
   server = app.listen(4000)
 })
 
@@ -33,9 +33,9 @@ describe('test swagger api!!', () => {
     done()
   })
 
-  it('test apidoc!', async done => {
+  it('test apiDoc!', async done => {
     await request(server)
-      .get('/v1/apidoc')
+      .get('/v1/apiDoc')
       .set('Accept', 'application/json')
       .expect('Content-Type', 'text/html; charset=utf-8')
       .expect(200)
@@ -50,7 +50,7 @@ describe('test user api!!', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200)
-    expect(userRes.body.result.datas.length).toBe(0)
+    expect(userRes.body.result.data.length).toBe(0)
     const res = await request(server)
       .post('/v1/register')
       .send(user)

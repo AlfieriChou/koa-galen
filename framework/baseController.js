@@ -8,7 +8,7 @@ class BaseController {
       count: await ctx.models[modelName].count(filter),
       offset: parseInt(query.offset, 10) || 0,
       limit: parseInt(query.limit, 10) || 10,
-      datas: await ctx.models[modelName].findAll(filter)
+      data: await ctx.models[modelName].findAll(filter)
     }
   }
 

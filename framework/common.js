@@ -1,14 +1,14 @@
 const _ = require('lodash')
 
-const camelizeKeys = (obj) => {
+const camelObjKeys = (obj) => {
   if (Array.isArray(obj)) {
-    return obj.map(v => camelizeKeys(v))
+    return obj.map(v => camelObjKeys(v))
   }
   if (obj !== null && obj.constructor === Object) {
     return Object.keys(obj)
       .reduce((result, key) => ({
         ...result,
-        [_.camelCase(key)]: camelizeKeys(obj[key])
+        [_.camelCase(key)]: camelObjKeys(obj[key])
       }), {})
   }
   return obj
@@ -35,7 +35,7 @@ const deepMapKeys = (data, fn) => {
 }
 
 module.exports = {
-  camelizeKeys,
+  camelObjKeys,
   intersection,
   deepMapKeys
 }

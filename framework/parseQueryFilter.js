@@ -40,7 +40,7 @@ const optAliases = {
   $col: Op.col
 }
 
-const parseIncludes = (datas, ctx) => datas.map((data) => {
+const parseIncludes = (rets, ctx) => rets.map((data) => {
   const { where, include } = data
   if (!ctx.models[data.model]) {
     throw new Error(`Not found Model ${data.model}`)

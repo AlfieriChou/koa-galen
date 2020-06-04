@@ -5,8 +5,8 @@ const authMiddleware = require('./middleware/auth')
 
 const bootstrap = async () => {
   const app = await initializeApp(config)
-  const apiIndex = app.coreMiddlewares.indexOf('api')
-  app.coreMiddlewares.splice(
+  const apiIndex = app.coreMiddleWares.indexOf('api')
+  app.coreMiddleWares.splice(
     apiIndex, 0, 'jwtVerify', 'auth'
   )
   app.middlewareFuncs = {
@@ -14,7 +14,7 @@ const bootstrap = async () => {
     auth: authMiddleware,
     jwtVerify: jwtVerifyMiddleware
   }
-  await app.loadMiddlewares(app)
+  await app.loadMiddleWares(app)
   app.listen(config.port, () => {
     // eslint-disable-next-line no-console
     console.log(`✅  The server is running at http://localhost:${config.port}`)

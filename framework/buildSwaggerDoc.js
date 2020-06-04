@@ -47,11 +47,11 @@ const buildSwaggerDoc = async (info, ctx) => {
       if (output) {
         content.responses = await Object.entries(output)
           .reduce(async (resPromise, [responseKey, { type, result }]) => {
-            const outputDatas = await resPromise
+            const outputRets = await resPromise
             if (!resTypeList.includes(type)) throw new Error('output type mast ba array or object or number or string or html!')
             if (type === 'html') {
               return {
-                ...outputDatas,
+                ...outputRets,
                 [responseKey]: {
                   description: 'response success',
                   content: {
@@ -60,7 +60,7 @@ const buildSwaggerDoc = async (info, ctx) => {
                 }
               }
             }
-            outputDatas[200] = {
+            outputRets[200] = {
               description: 'response success',
               content: {
                 'application/json': {
@@ -87,7 +87,7 @@ const buildSwaggerDoc = async (info, ctx) => {
               outputSchema = { type: 'object', properties: { result: { type: 'string', description: '返回标识' } } }
             }
             return {
-              ...outputDatas,
+              ...outputRets,
               [responseKey]: {
                 description: 'response success',
                 content: {

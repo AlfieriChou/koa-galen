@@ -5,7 +5,7 @@ const path = require('path')
 const createModel = require('./models/createModel')
 const buildRelations = require('./models/relations')
 const validateConfig = require('./models/validateConfig')
-const buildCrudReoteMethods = require('./models/crudRemoteMethods')
+const buildCrudRemoteMethods = require('./models/crudRemoteMethods')
 const migrateModel = require('./models/migrate')
 
 module.exports = async (modelDirPath, ctx) => {
@@ -50,7 +50,7 @@ module.exports = async (modelDirPath, ctx) => {
       schema.tableName = _.snakeCase(filename)
     }
     const { modelName, model } = schema
-    const remoteMethods = buildCrudReoteMethods(filename, schema)
+    const remoteMethods = buildCrudRemoteMethods(filename, schema)
     ctx.remoteMethods = {
       ...ctx.remoteMethods,
       ...Object.entries(remoteMethods).reduce((acc, [key, value]) => ({

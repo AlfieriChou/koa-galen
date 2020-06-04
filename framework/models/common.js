@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-const seqielizeTypes = {
+const sequelizeTypes = {
   integer: Sequelize.INTEGER,
   string: Sequelize.STRING,
   date: Sequelize.DATE,
@@ -23,13 +23,13 @@ const jsonToModel = (properties, keyFn) => Object.entries(properties)
       ...ret,
       [key]: {
         ...value,
-        type: seqielizeTypes[value.type],
+        type: sequelizeTypes[value.type],
         comment
       }
     }
   }, {})
 
 module.exports = {
-  seqielizeTypes,
+  sequelizeTypes,
   jsonToModel
 }
