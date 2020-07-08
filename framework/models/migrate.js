@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const { jsonToModel, seqielizeTypes } = require('./conmon')
+const { jsonToModel, sequelizeTypes } = require('./common')
 
 // TODO add cache
 const getTableNames = async sequelize => sequelize.showAllTables()
@@ -44,7 +44,7 @@ module.exports = async ({
     if (!column) {
       await sequelize.addColumn(tableName, _.snakeCase(key), {
         ...value,
-        type: seqielizeTypes[value.type]
+        type: sequelizeTypes[value.type]
       })
     } else {
       // TODO modify field properties

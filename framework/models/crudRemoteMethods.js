@@ -25,7 +25,7 @@ const buildCrudRemoteMethods = (apiName, {
           count: { type: 'integer', description: '总数' },
           offset: { type: 'integer', description: '偏移量' },
           limit: { type: 'integer', description: '限制数量' },
-          datas: { type: 'array', items: { type: 'object', properties: model }, description: '数据' }
+          data: { type: 'array', items: { type: 'object', properties: model }, description: '数据' }
         }
       }
     }

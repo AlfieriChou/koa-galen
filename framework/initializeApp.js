@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const koaLogger = require('koa-logger')
-const koabody = require('koa-body')
+const koaBody = require('koa-body')
 const path = require('path')
 
 const bindPropertiesToCtx = require('./bindPropertiesToCtx')
@@ -10,10 +10,10 @@ const apiLoader = require('./dynamicRouter')
 module.exports = async (baseConfig) => {
   const projectRootPath = process.cwd()
   const config = {
-    viewDirpath: baseConfig.viewDirpath || path.join(projectRootPath, '/views'),
-    modelDirPath: baseConfig.viewDirpath || path.join(projectRootPath, '/app/models'),
-    controllerDirPath: baseConfig.viewDirpath || path.join(projectRootPath, '/app/controller'),
-    serviceDirPath: baseConfig.viewDirpath || path.join(projectRootPath, '/app/service'),
+    viewDirPath: baseConfig.viewDirPath || path.join(projectRootPath, '/views'),
+    modelDirPath: baseConfig.modelDirPath || path.join(projectRootPath, '/app/models'),
+    controllerDirPath: baseConfig.controllerDirPath || path.join(projectRootPath, '/app/controller'),
+    serviceDirPath: baseConfig.serviceDirPath || path.join(projectRootPath, '/app/service'),
     ...baseConfig
   }
 
@@ -21,7 +21,7 @@ module.exports = async (baseConfig) => {
   await bindPropertiesToCtx(app, config)
   const api = await apiLoader(app.context, config.prefix || '/v1')
 
-  app.coreMiddlewares = ['cors', 'logger', 'body', 'api', 'bodyParser']
+  app.coreMiddleWares = ['cors', 'logger', 'body', 'api', 'bodyParser']
   app.middlewareFuncs = {
     cors: async (ctx, next) => {
       if (ctx.request.method === 'OPTIONS') {
@@ -44,13 +44,13 @@ module.exports = async (baseConfig) => {
       }
     },
     logger: koaLogger(),
-    body: koabody({}),
+    body: koaBody({}),
     api: api.middleware(),
     bodyParser: bodyParser()
   }
 
-  app.loadMiddlewares = async (application) => {
-    await application.coreMiddlewares.reduce(async (promise, middlewareName) => {
+  app.loadMiddleWares = async (application) => {
+    await application.coreMiddleWares.reduce(async (promise, middlewareName) => {
       await promise
       application.use(application.middlewareFuncs[middlewareName])
     }, Promise.resolve())

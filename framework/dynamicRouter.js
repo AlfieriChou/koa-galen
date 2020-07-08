@@ -3,7 +3,7 @@ const { Validator } = require('jsonschema')
 const _ = require('lodash')
 const BaseController = require('./baseController')
 const {
-  camelizeKeys, intersection
+  camelObjKeys, intersection
 } = require('./common')
 
 const v = new Validator()
@@ -67,7 +67,7 @@ module.exports = async (context, prefix = '/v1') => {
             ctx.body = {
               status: 200,
               message: 'success',
-              result: camelizeKeys(ret)
+              result: camelObjKeys(ret)
             }
             return
           }
@@ -76,7 +76,7 @@ module.exports = async (context, prefix = '/v1') => {
             ctx.body = {
               status: 200,
               message: 'success',
-              result: camelizeKeys(ret)
+              result: camelObjKeys(ret)
             }
             return
           }

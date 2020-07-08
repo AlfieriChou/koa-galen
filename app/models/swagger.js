@@ -2,7 +2,7 @@ module.exports = {
   dialect: 'virtual',
   remoteMethods: {
     htmlDoc: {
-      path: '/apidoc',
+      path: '/apiDoc',
       method: 'get',
       tags: ['swagger'],
       summary: 'api文档',
