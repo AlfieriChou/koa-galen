@@ -65,18 +65,18 @@ module.exports = async (context, prefix = '/v1') => {
           if (ctx.controller[modelName] && ctx.controller[modelName][handler]) {
             const ret = await ctx.controller[modelName][handler](ctx)
             ctx.body = {
-              status: 200,
+              code: 200,
               message: 'success',
-              result: camelObjKeys(ret)
+              data: camelObjKeys(ret)
             }
             return
           }
           if (BaseController[handler]) {
             const ret = await BaseController[handler](ctx, _.upperFirst(modelName))
             ctx.body = {
-              status: 200,
+              code: 200,
               message: 'success',
-              result: camelObjKeys(ret)
+              data: camelObjKeys(ret)
             }
             return
           }

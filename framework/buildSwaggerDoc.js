@@ -46,7 +46,7 @@ const buildSwaggerDoc = async (info, ctx) => {
       }
       if (output) {
         content.responses = await Object.entries(output)
-          .reduce(async (resPromise, [responseKey, { type, result }]) => {
+          .reduce(async (resPromise, [responseKey, { type, model, result }]) => {
             const outputRets = await resPromise
             if (!resTypeList.includes(type)) throw new Error('output type mast ba array or object or number or string or html!')
             if (type === 'html') {
@@ -64,27 +64,35 @@ const buildSwaggerDoc = async (info, ctx) => {
               description: 'response success',
               content: {
                 'application/json': {
-                  schema: { $ref: `#/components/schemas/${schemaKey.split('-')[0]}` }
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      code: { type: 'number' },
+                      message: { type: 'string' },
+                      data: {
+                        $ref: `#/components/schemas/${schemaKey.split('-')[0]}`
+                      }
+                    }
+                  }
                 }
               }
             }
-            let outputSchema
+            const outputData = {}
             if (type === 'array') {
-              outputSchema = {
-                type: 'array',
-                items: result || {
-                  type: 'string'
-                }
-              }
+              outputData.type = 'array'
+              outputData.items = model ? schemas[model] : result || {}
             }
             if (type === 'object') {
-              outputSchema = { type: 'object', properties: result || {} }
+              outputData.type = 'object'
+              outputData.properties = model ? schemas[model].properties : result || {}
             }
             if (type === 'number') {
-              outputSchema = { type: 'object', properties: { result: { type: 'number', description: '返回标识' } } }
+              outputData.type = 'number'
+              outputData.description = '返回标识'
             }
             if (type === 'string') {
-              outputSchema = { type: 'object', properties: { result: { type: 'string', description: '返回标识' } } }
+              outputData.type = 'string'
+              outputData.description = '返回标识'
             }
             return {
               ...outputRets,
@@ -92,7 +100,14 @@ const buildSwaggerDoc = async (info, ctx) => {
                 description: 'response success',
                 content: {
                   'application/json': {
-                    schema: outputSchema
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        code: { type: 'number' },
+                        message: { type: 'string' },
+                        data: outputData
+                      }
+                    }
                   }
                 }
               }

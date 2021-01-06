@@ -5,10 +5,8 @@ class BaseController {
     const { request: { query } } = ctx
     const filter = parseQuery(query, ctx)
     return {
-      count: await ctx.models[modelName].count(filter),
-      offset: parseInt(query.offset, 10) || 0,
-      limit: parseInt(query.limit, 10) || 10,
-      data: await ctx.models[modelName].findAll(filter)
+      total: await ctx.models[modelName].count(filter),
+      list: await ctx.models[modelName].findAll(filter)
     }
   }
 

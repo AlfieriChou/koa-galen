@@ -38,7 +38,7 @@ module.exports = {
       output: {
         200: {
           type: 'object',
-          result: model
+          model: 'User'
         }
       }
     },
